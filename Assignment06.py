@@ -25,9 +25,6 @@ strChoice = ""  # Captures the user option selection
 strTask = ""  # Captures the user task data
 strPriority = ""  # Captures the user priority data
 strStatus = ""  # Captures the status of an processing functions
-task = ""
-priority = ""
-task_to_remove = ""
 
 # Processing  --------------------------------------------------------------- #
 class Processor:
