@@ -8,45 +8,45 @@
 # RRoot,1.1.2030,Created started script
 # RRoot,1.1.2030,Added code to complete assignment 5
 # EChapman,2.17.2021 Modified code to complete assignment 6
+#          2.18.2021 Continued inputting
+#          2.19.2021 Troubleshooting
+#          2.20.2021 Troubleshooting and debugging
+#          2.21.2021 TroubleShooting, completed
 # ---------------------------------------------------------------------------- #
 
 # Data ---------------------------------------------------------------------- #
 # Declare variables and constants
-#strFileName = "ToDoFile.txt"
-file_name = "ToDOList.txt"
+strFileName = "ToDoFile.txt"
+file_name = "C:\_PythonClass\Assignment06\ToDoList.txt"
 objFile = None  # An object that represents a file
 dicRow = {}  # A row of data separated into elements of a dictionary {Task,Priority}
-#lstTable = []  # A list that acts as a 'table' of rows
+list_of_rows = []  # A list that acts as a 'table' of rows
 strChoice = ""  # Captures the user option selection
 strTask = ""  # Captures the user task data
 strPriority = ""  # Captures the user priority data
 strStatus = ""  # Captures the status of an processing functions
-list_of_rows = []
 task = ""
 priority = ""
 task_to_remove = ""
 
-#PROBLEMS tasks do not get uploaded, IO does not get linked in Processing
 # Processing  --------------------------------------------------------------- #
 class Processor:
     """  Performs Processing tasks """
     @staticmethod
     def read_data_from_file(file_name, list_of_rows):
-        file_name = "C:\_PythonClass\Assignment06\ToDoList.txt"
+        """Reads data from file"""
         file = open(file_name, "r")
         for row in file:
-            data = row.split(",")
-            dicRow = {"Task": data[0].strip(), "Priority": data[1].strip()}
+            task,priority= row.split(",")
+            dicRow = {"Task": task.strip(), "Priority":priority.strip()}
             list_of_rows.append(dicRow)
         file.close()
-
-
-    #file_name = "ToDo.txt"
+        return list_of_rows, 'Success'
 
     @staticmethod
     def add_data_to_list(task, priority, list_of_rows):
-        NewRow = {"Task": task, "Priority": priority}
-        list_of_rows.append(NewRow)
+        dicRow = {"Task": task, "Priority": priority}
+        list_of_rows.append(dicRow)
         return
 
 
@@ -62,20 +62,17 @@ class Processor:
 
     @staticmethod
     def write_data_to_file(file_name, list_of_rows):
-        file_name = "C:\_PythonClass\Assignment06\ToDoList.txt"
-        objFile = open(file_name, "w+")
+        objFile = open(file_name, "w")
         for i in list_of_rows:
-            objFile.write('%s\n' % list_of_rows)
+            objFile.write(i['Task']+ "," + i['Priority'] + '\n')
         objFile.close()
-        return
-
-
 # Presentation (Input/Output)  -------------------------------------------- #
 class IO:
     """ Performs Input and Output tasks """
 
     @staticmethod
-    def print_menu_Tasks():  # display menu of choices
+    def print_menu_Tasks():
+        """display menu of choices"""
         print('''
         Menu of Options
         1) Add a new Task
@@ -90,7 +87,7 @@ class IO:
     def input_menu_choice():
         choice = str(input("Which option would you like to perform? [1 to 5] - ")).strip()
         print("\n")
-        return choice  #DO NOT REMOVE
+        return choice
 
     @staticmethod
     def print_current_Tasks_in_list(list_of_rows):
@@ -102,7 +99,7 @@ class IO:
         print("\n")  # Added an extra line for looks
 
     @staticmethod
-    def input_yes_no_choice(message):  #DO NOT CHANGE
+    def input_yes_no_choice(message):
         response = None
         while response not in ("yes", "no"):
             response = input(message).lower()
@@ -117,13 +114,13 @@ class IO:
     def input_new_task_and_priority():
         task = str(input("Enter a Task: "))
         priority = str(input("Enter a priority: "))
-        Processor.add_data_to_list(task, priority, list_of_rows) #worked
+        Processor.add_data_to_list(task, priority, list_of_rows)
         return
 
     @staticmethod
     def input_task_to_remove():
         task_to_remove = input("Select a task to remove...Be Specific: ")
-        Processor.remove_data_from_list(task_to_remove, list_of_rows)   #ATTEMPT
+        Processor.remove_data_from_list(task_to_remove, list_of_rows)
         return
 
 
@@ -152,7 +149,7 @@ while (True):
         IO.input_press_to_continue(strStatus)
         continue  # to show the menu
 
-    elif strChoice == '3':  # Save Data to File   #NOT ACTUALLY SAVING DATA TO FILE
+    elif strChoice == '3':  # Save Data to File   #
         IO.print_current_Tasks_in_list(list_of_rows)
         strChoice = IO.input_yes_no_choice("Save this data to file? (yes/no) - ")
         if strChoice.lower() == "yes":
@@ -169,8 +166,8 @@ while (True):
     elif strChoice == '4':  # Reload Data from File
         print("Warning: Unsaved Data Will Be Lost!")
         strChoice = IO.input_yes_no_choice("Are you sure you want to reload data from file? (yes/no) -  ")
-        if strChoice.lower() == "yes":   #WORKING HERE 4:17
-            Processor.read_data_from_file(file_name, list_of_rows)  # WHAT DOES RELOAD MEAN
+        if strChoice.lower() == "yes":
+            Processor.read_data_from_file(file_name, list_of_rows)
             IO.input_press_to_continue(strStatus)
         else:
             IO.input_press_to_continue("File Reload  Cancelled!")
