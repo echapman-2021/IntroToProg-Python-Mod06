@@ -16,8 +16,8 @@
 
 # Data ---------------------------------------------------------------------- #
 # Declare variables and constants
-strFileName = "ToDoFile.txt"
-file_name = "C:\_PythonClass\Assignment06\ToDoList.txt"
+
+file_name = "ToDoFile.txt"  # "C:\_PythonClass\Assignment06\ToDoList.txt"
 objFile = None  # An object that represents a file
 dicRow = {}  # A row of data separated into elements of a dictionary {Task,Priority}
 list_of_rows = []  # A list that acts as a 'table' of rows
@@ -31,7 +31,12 @@ class Processor:
     """  Performs Processing tasks """
     @staticmethod
     def read_data_from_file(file_name, list_of_rows):
-        """Reads data from file"""
+        """ Reads data from a file into a list of dictionary rows
+
+                :param file_name: (string) with name of file:
+                :param list_of_rows: (list) you want filled with file data:
+                :return: (list) of dictionary rows
+                """
         file = open(file_name, "r")
         for row in file:
             task,priority= row.split(",")
@@ -44,7 +49,7 @@ class Processor:
     def add_data_to_list(task, priority, list_of_rows):
         dicRow = {"Task": task, "Priority": priority}
         list_of_rows.append(dicRow)
-        return
+        return list_of_rows, 'Success'
 
 
     @staticmethod
@@ -55,7 +60,7 @@ class Processor:
                 print("{", task_to_remove, "} has been deleted")
             else:
                 continue
-        return
+        return list_of_rows, 'Success'
 
     @staticmethod
     def write_data_to_file(file_name, list_of_rows):
@@ -63,6 +68,8 @@ class Processor:
         for i in list_of_rows:
             objFile.write(i['Task']+ "," + i['Priority'] + '\n')
         objFile.close()
+        return list_of_rows, 'Success'
+
 # Presentation (Input/Output)  -------------------------------------------- #
 class IO:
     """ Performs Input and Output tasks """
@@ -82,13 +89,21 @@ class IO:
 
     @staticmethod
     def input_menu_choice():
+        """ Gets the menu choice from a user
+
+                :return: string
+                """
         choice = str(input("Which option would you like to perform? [1 to 5] - ")).strip()
         print("\n")
         return choice
 
     @staticmethod
     def print_current_Tasks_in_list(list_of_rows):
-        """ Shows the current Tasks in the list of dictionaries rows"""
+        """ Shows the current Tasks in the list of dictionaries rows
+
+               :param list_of_rows: (list) of rows you want to display
+               :return: nothing
+               """
         print("******* The current Tasks ToDo are: *******")
         for dicRow in list_of_rows:
             print(dicRow["Task"] + " (" + dicRow["Priority"] + ")")
@@ -97,15 +112,26 @@ class IO:
 
     @staticmethod
     def input_yes_no_choice(message):
+        """ Gets a yes or no choice from the user
+
+               :return: string
+               """
         response = None
         while response not in ("yes", "no"):
-            response = input(message).lower()
-        return response.strip()
+            response = input(message)
+        return response.strip().lower()
+
 
     @staticmethod
     def input_press_to_continue(optional_message=''):
-        optional_message = input('Press the [Enter] key to continue.')
-        return  # optional message removed
+        """ Pause program and show a message before continuing
+
+                :param optional_message:  An optional message you want to display
+                :return: nothing
+                """
+        print(optional_message)
+        input('Press the [Enter] key to continue.')
+        #return
 
     @staticmethod
     def input_new_task_and_priority():
